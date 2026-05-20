@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOKSTORM | WEBSITE</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+cursor:none;
+}
+
+body{
+background:#050712;
+overflow:hidden;
+color:white;
+transition:0.4s;
+}
+
+:root{
+--main:#00f0ff;
+}
+
+/* BACKGROUND */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-5;
+}
+
+/* GLOW */
+.glow{
+position:fixed;
+width:400px;
+height:400px;
+filter:blur(140px);
+opacity:.25;
+z-index:-4;
+}
+.g1{background:var(--main);top:-150px;left:-150px;}
+.g2{background:var(--main);bottom:-150px;right:-150px;}
+
+/* CURSOR */
+.cursor{
+position:fixed;
+width:14px;
+height:14px;
+border-radius:50%;
+background:var(--main);
+transform:translate(-50%,-50%);
+pointer-events:none;
+box-shadow:0 0 25px var(--main);
+z-index:9999;
+transition:0.05s;
+}
+
+/* SIDEBAR */
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:260px;
+height:100%;
+background:rgba(255,255,255,0.03);
+backdrop-filter:blur(25px);
+border-right:1px solid rgba(255,255,255,0.08);
+padding:25px;
+}
+
+.logo{
+font-size:2rem;
+font-weight:800;
+background:linear-gradient(90deg,var(--main),#fff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:30px;
+}
+
+/* SIDEBAR HOVER FIX */
+.sidebar a{
+display:block;
+padding:14px;
+margin:10px 0;
+border-radius:12px;
+text-decoration:none;
+color:#bfefff;
+background:rgba(255,255,255,0.02);
+transition:.25s;
+}
+
+.sidebar a:hover{
+transform:translateX(12px) rotateY(8deg);
+background:var(--main);
+color:black;
+box-shadow:0 0 25px var(--main);
+}
+
+/* MAIN */
+.main{
+margin-left:260px;
+padding:60px;
+text-align:center;
+}
+
+.hero h1{
+font-size:6.5rem;
+background:linear-gradient(90deg,var(--main),#fff,var(--main));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:shine 5s linear infinite;
+}
+
+@keyframes shine{
+0%{background-position:0%;}
+100%{background-position:300%;}
+}
+
+.title{
+font-size:3rem;
+margin-top:60px;
+color:var(--main);
+text-shadow:0 0 25px var(--main);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:25px;
+margin-top:50px;
+}
+
+.box{
+padding:35px;
+border-radius:18px;
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.08);
+transition:.3s;
+}
+
+.box:hover{
+transform:scale(1.08);
+box-shadow:0 0 35px var(--main);
+background:rgba(255,255,255,0.08);
+}
+
+/* SETTINGS */
+.settings{
+position:fixed;
+right:-360px;
+top:0;
+width:360px;
+height:100%;
+background:rgba(0,0,0,0.75);
+backdrop-filter:blur(25px);
+padding:20px;
+transition:.4s;
+border-left:1px solid rgba(255,255,255,0.1);
+overflow:auto;
+}
+
+.settings.active{right:0;}
+
+.settings button{
+width:100%;
+margin:8px 0;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#111;
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.settings button:hover{
+background:var(--main);
+color:black;
+box-shadow:0 0 20px var(--main);
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="cursor" id="cursor"></div>
+
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<div class="logo">NOKSTORM</div>
+
+<a href="#">HOME</a>
+<a href="https://youtube.com/@nokstorm_786?si=I4aqfhNDFDYB1qBg" target="_blank">CHANNEL</a>
+<a href="https://guns.lol/nokstorm" target="_blank">GUNS PROFILE</a>
+<a href="https://discord.gg/xdMxDDMRCM" target="_blank">DISCORD</a>
+<a href="#" onclick="toggleSettings()">SETTINGS</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="hero">
+<h1>NOKSTORM</h1>
+</div>
+
+<div class="title">INSANE PvP • EPIC CONTENT • COMMUNITY</div>
+
+<div class="grid">
+<div class="box">🔥 EPIC CONTENT</div>
+<div class="box">⚔ INSANE PvP</div>
+<div class="box">💎 STRONG COMMUNITY</div>
+<div class="box">🚀 GAME HUB</div>
+</div>
+
+</div>
+
+<!-- SETTINGS -->
+<div class="settings" id="settings">
+
+<h2 style="color:var(--main);">SETTINGS</h2>
+
+<h3>🎯 Crosshair</h3>
+<button onclick="setCross('dot')">Dot</button>
+<button onclick="setCross('ring')">Ring</button>
+<button onclick="setCross('square')">Square</button>
+
+<h3>🎨 Theme</h3>
+<button onclick="setTheme('#00f0ff')">Blue</button>
+<button onclick="setTheme('#8a2be2')">Purple</button>
+<button onclick="setTheme('#ff8800')">Orange</button>
+<button onclick="setTheme('#00ff88')">Green</button>
+<button onclick="setTheme('#ffffff')">White</button>
+
+<h3>🎵 Music</h3>
+<button onclick="playMusic('bairan.mp3')">Bairan</button>
+<button onclick="playMusic('golden.mp3')">Golden Brown</button>
+<button onclick="playMusic('funk.mp3')">Funk Beat</button>
+
+<button onclick="toggleSettings()">Close</button>
+
+</div>
+
+<audio id="audio" loop></audio>
+
+<script>
+
+/* CURSOR */
+const cursor=document.getElementById("cursor");
+
+document.addEventListener("mousemove",(e)=>{
+cursor.style.left=e.clientX+"px";
+cursor.style.top=e.clientY+"px";
+});
+
+/* SETTINGS */
+function toggleSettings(){
+document.getElementById("settings").classList.toggle("active");
+}
+
+/* CROSSHAIR FIXED */
+function setCross(type){
+
+cursor.className="cursor";
+
+if(type==="dot"){
+cursor.style.border="none";
+cursor.style.background=getComputedStyle(document.documentElement).getPropertyValue('--main');
+}
+
+if(type==="ring"){
+cursor.style.background="transparent";
+cursor.style.border="2px solid var(--main)";
+}
+
+if(type==="square"){
+cursor.style.background="transparent";
+cursor.style.border="2px solid var(--main)";
+cursor.style.borderRadius="0";
+}
+}
+
+/* THEME FIXED */
+function setTheme(color){
+document.documentElement.style.setProperty('--main',color);
+cursor.style.background=color;
+cursor.style.boxShadow=`0 0 25px ${color}`;
+}
+
+/* MUSIC FIXED (user interaction unlock) */
+let audio=document.getElementById("audio");
+
+function playMusic(src){
+audio.src=src;
+audio.play().catch(()=>alert("Click again to enable audio 🔊"));
+}
+
+/* BACKGROUND */
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let p=[];
+for(let i=0;i<140;i++){
+p.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2,
+s:Math.random()*1.2
+});
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--main');
+
+p.forEach(e=>{
+ctx.beginPath();
+ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
+ctx.fill();
+
+e.y+=e.s;
+if(e.y>canvas.height){
+e.y=0;
+e.x=Math.random()*canvas.width;
+}
+});
+
+requestAnimationFrame(animate);
+}
+animate();
+
+</script>
+
+</body>
+</html>
